@@ -1,98 +1,136 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NestJS Business Card Site Builder (with Auth)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a backend service built with **NestJS** that allows **authenticated users** to create and manage their own single-page "business card" websites.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The primary goal of the service is to provide a platform where any user can quickly generate pages for their products or services, upload photos, and receive orders directly to their email.
 
-## Description
+## 🚀 Project Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The service provides a secure API for creating, updating, and deleting "business card sites." Each user only has access to the sites they have created.
 
-## Project setup
+The service implements:
+1.  **Authentication**: User registration and login using JWT (JSON Web Tokens).
+2.  **Site Management**: Full CRUD for sites, linked to a specific user.
+3.  **File Uploads**: Ability to upload photos for sites directly to the server.
+4.  **Order Form**: A public form on each site that sends order details to the site owner's email (or a pre-configured email).
 
-```bash
-$ npm install
-```
+## ✨ Key Features
 
-## Compile and run the project
+* **User Authentication**:
+    * Registration (Email/Password).
+    * Login and receiving an `access_token`.
+* **Privacy**: All site management endpoints (`/sites`) are protected (require a JWT token). A user cannot see or edit another user's sites.
+* **Business Card Site Creation**:
+    * Title, Price, Description 1, Description 2.
+    * Choice of one of three design templates.
+* **Photo Uploads**: Uploading images (using `multipart/form-data`) when creating or updating a site.
+* **Order Form**: Collection of minimal information (Name, Phone, Address, Quantity, Comment) and sending it via Email.
 
-```bash
-# development
-$ npm run start
+## 🛠 Tech Stack
 
-# watch mode
-$ npm run start:dev
+* **Backend**: [NestJS](https://nestjs.com/)
+* **Language**: [TypeScript](https://www.typescriptlang.org/)
+* **Authentication**: [Passport.js](https://www.passportjs.org/) (with `JwtStrategy` and `LocalStrategy`)
+* **File Uploads**: [Multer](https://github.com/expressjs/multer) (for handling `multipart/form-data`)
+* **Email**: [Nodemailer](https://nodemailer.com/) (or `@nestjs-modules/mailer`)
+* **Database**: [MongoDB](https://www.mongodb.com/)
+* **ODM**: [Mongoose](https://mongoosejs.com/) (via `@nestjs/mongoose`)
 
-# production mode
-$ npm run start:prod
-```
+## 📦 Installation and Setup
 
-## Run tests
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+    cd your-repo-name
+    ```
 
-```bash
-# unit tests
-$ npm run test
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-# e2e tests
-$ npm run test:e2e
+3.  **Configure environment variables:**
+    Create a `.env` file in the project root and fill in the required fields.
 
-# test coverage
-$ npm run test:cov
-```
+    ```.env
+    # MongoDB Connection String
+    # Example for local instance:
+    MONGODB_URI=mongodb://localhost:27017/your_db_name
+    # Example for Atlas:
+    # MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.abcde.mongodb.net/your_db_name?retryWrites=true&w=majority
 
-## Deployment
+    # Secret key for JWT
+    JWT_SECRET=YOUR_VERY_STRONG_SECRET_KEY_HERE
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+    # Email (SMTP) settings
+    EMAIL_HOST=smtp.example.com
+    EMAIL_PORT=587
+    EMAIL_USER=your-email@example.com
+    EMAIL_PASS=your-email-password
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+    # Email to which orders will be sent (can be made dynamic)
+    ORDER_RECIIPENT_EMAIL=admin@your-domain.com
+    ```
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+4.  **Run the project in development mode:**
+    ```bash
+    npm run start:dev
+    ```
+    The server will be available at `http://localhost:3000`.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 📖 API Endpoints
 
-## Resources
+(🔒 = Requires `Bearer` authentication token)
 
-Check out a few resources that may come in handy when working with NestJS:
+### Authentication (`/auth`)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+| Method | Path | Description |
+| :--- | :--- | :--- |
+| `POST` | `/auth/register` | Register a new user (email, password). |
+| `POST` | `/auth/login` | Log in a user, returns an `access_token`. |
+| `GET` | `/auth/profile` | 🔒 Get the profile of the current user. |
 
-## Support
+### Site Management (`/sites`)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+| Method | Path | Description |
+| :--- | :--- | :--- |
+| `POST` | `/sites` | 🔒 Create a new site. Data is sent as `multipart/form-data`. |
+| `GET` | `/sites` | 🔒 Get a list of the user's **own** sites. |
+| `GET` | `/sites/public/:id` | **(Public)** Get site data for client-side display. |
+| `PATCH` | `/sites/:id` | 🔒 Update the user's **own** site (also `multipart/form-data`). |
+| `DELETE` | `/sites/:id` | 🔒 Delete the user's **own** site. |
 
-## Stay in touch
+### Ordering (`/order`)
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+| Method | Path | Description |
+| :--- | :--- | :--- |
+| `POST` | `/order/:siteId` | **(Public)** Submit the order form for a specific site. |
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Example Request: Create Site (🔒 `POST /sites`)
+
+This request must be sent as `multipart/form-data`, not `application/json`, as it includes files.
+
+**Form Fields:**
+
+* `title` (text): "Product Name"
+* `price` (text): "1500 UAH"
+* `description1` (text): "Main product description..."
+* `description2` (text): "Additional text..."
+* `designTemplate` (text): "template_1"
+* `photos` (file): [File 1.jpg]
+* `photos` (file): [File 2.jpg]
+
+### Example Request: Place Order (Public `POST /order/:siteId`)
+
+This request is sent as `application/json`.
+
+```json
+{
+  "name": "Ivan Petrenko",
+  "phone": "+380991234567",
+  "address": "Kyiv, Khreshchatyk St, 1",
+  "quantity": 2,
+  "notes": "Please call before delivery."
+}
